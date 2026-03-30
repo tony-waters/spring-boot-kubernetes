@@ -15,10 +15,10 @@ resource "helm_release" "spring_boot_app" {
   namespace        = kubernetes_namespace.app.metadata[0].name
   create_namespace = false
 
-  chart = "${path.module}/../helm"
+  chart = "${path.module}/../helm/spring-boot-app"
 
-  atomic          = true
-  cleanup_on_fail = true
+  atomic          = false
+  cleanup_on_fail = false
   wait            = true
   timeout         = 300
 
@@ -36,6 +36,23 @@ resource "helm_release" "spring_boot_app" {
         type       = var.service_type
         port       = 80
         targetPort = 8080
+      }
+
+      probes = {
+        liveness = {
+          path                = "/actuator/health/liveness"
+          initialDelaySeconds = 30
+          periodSeconds       = 10
+          timeoutSeconds      = 2
+          failureThreshold    = 3
+        }
+        readiness = {
+          path                = "/actuator/health/readiness"
+          initialDelaySeconds = 20
+          periodSeconds       = 10
+          timeoutSeconds      = 2
+          failureThreshold    = 3
+        }
       }
 
       app = {

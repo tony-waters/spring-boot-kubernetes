@@ -1,4 +1,4 @@
-kube_context = "docker-desktop"
+kube_context = "kind-kind"
 
 namespace        = "spring-boot-app-demo"
 release_name     = "spring-boot-app"

@@ -29,13 +29,13 @@ resources:
 
 probes:
   liveness:
-    path: /actuator/health/liveness
+    path: "/actuator/health/liveness"
     initialDelaySeconds: 30
     periodSeconds: 10
     timeoutSeconds: 2
     failureThreshold: 3
   readiness:
-    path: /actuator/health/readiness
+    path: "/actuator/health/readiness"
     initialDelaySeconds: 20
     periodSeconds: 10
     timeoutSeconds: 2
@@ -52,7 +52,7 @@ ingress:
   className: ""
   annotations: {}
   hosts:
-    - host: spring-jpa.local
+    - host: spring-boot-app.local
       paths:
         - path: /
           pathType: Prefix
