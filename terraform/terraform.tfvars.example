@@ -3,7 +3,7 @@ kube_context = "kind-kind"
 namespace        = "spring-boot-app-demo"
 release_name     = "spring-boot-app"
 image_repository = "ghcr.io/tony-waters/spring-boot-app"
-image_tag        = "latest"
+image_tag        = "sha-8c433e0"
 
 replica_count = 1
 service_type  = "ClusterIP"
