@@ -1,0 +1,34 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: spring-boot-app-seed
+  namespace: spring-boot-app-demo
+spec:
+  backoffLimit: 0
+  ttlSecondsAfterFinished: 300   # auto-cleanup after 5 mins (optional but nice)
+  template:
+    spec:
+      restartPolicy: Never
+
+      containers:
+        - name: seed
+          image: ghcr.io/tony-waters/spring-boot-app:latest
+          imagePullPolicy: IfNotPresent
+
+          # Reuse SAME config as app
+          envFrom:
+            - configMapRef:
+                name: spring-boot-app-spring-boot-app
+
+          # Only override what we need
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: seed
+
+            # Optional JVM tuning (reuse if you already have this key)
+            - name: JAVA_TOOL_OPTIONS
+              valueFrom:
+                configMapKeyRef:
+                  name: spring-boot-app-spring-boot-app
+                  key: JAVA_OPTS
+                  optional: true
