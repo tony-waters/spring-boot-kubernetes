@@ -86,3 +86,9 @@ variable "autoscaling_target_cpu" {
   type        = number
   default     = 70
 }
+
+variable "seed_job_enabled" {
+  description = "Whether to create the seed job"
+  type        = bool
+  default     = false
+}

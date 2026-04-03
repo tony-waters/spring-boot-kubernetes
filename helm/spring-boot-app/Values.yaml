@@ -47,6 +47,9 @@ autoscaling:
   maxReplicas: 3
   targetCPUUtilizationPercentage: 70
 
+seedJob:
+  enabled: false
+
 ingress:
   enabled: false
   className: ""
