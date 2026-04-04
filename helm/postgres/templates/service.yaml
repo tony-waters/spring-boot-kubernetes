@@ -1,0 +1,15 @@
+{{- if and (eq .Values.database.mode "internal") .Values.database.internal.enabled }}
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.database.internal.serviceName }}
+spec:
+  type: ClusterIP
+  ports:
+    - name: postgres
+      port: {{ .Values.database.internal.port }}
+      targetPort: 5432
+  selector:
+    app.kubernetes.io/name: {{ include "app.name" . }}-postgres
+    app.kubernetes.io/instance: {{ .Release.Name }}
+{{- end }}
