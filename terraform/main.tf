@@ -146,7 +146,8 @@ resource "helm_release" "spring_boot_app" {
       }
 
       seedJob = {
-        enabled                 = var.seed_job_enabled
+        # enabled                 = var.seed_job_enabled
+        enabled                 = true
         springProfile           = "seed"
         backoffLimit            = 0
         ttlSecondsAfterFinished = 300

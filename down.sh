@@ -1,5 +1,5 @@
 
 cd terraform
-source kind delete cluster
 terraform destroy -var-file=terraform.tfvars.example -auto-approve
+kind delete cluster
 cd ..
