@@ -1,6 +1,6 @@
 
 cd terraform
-source kind create cluster
+kind create cluster
 terraform apply -var-file=terraform.tfvars.example -auto-approve
 cd ..
 
