@@ -30,38 +30,3 @@ database:
     passwordKey: password
     dbNameKey: database
 
-app:
-  image:
-    repository: ghcr.io/your-org/your-app
-    tag: latest
-    pullPolicy: IfNotPresent
-
-  replicas: 1
-
-  service:
-    port: 8080
-
-  resources:
-    requests:
-      cpu: 100m
-      memory: 256Mi
-    limits:
-      cpu: 1000m
-      memory: 1Gi
-
-  env:
-    springProfilesActive: kubernetes
-
-migration:
-  enabled: true
-  image:
-    repository: ghcr.io/your-org/your-app
-    tag: latest
-    pullPolicy: IfNotPresent
-
-seed:
-  enabled: false
-  image:
-    repository: ghcr.io/your-org/your-app
-    tag: latest
-    pullPolicy: IfNotPresent

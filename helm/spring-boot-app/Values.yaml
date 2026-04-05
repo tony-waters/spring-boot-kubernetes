@@ -2,7 +2,7 @@ replicaCount: 1
 
 image:
   repository: ghcr.io/tony-waters/spring-boot-app
-  tag: sha-8c433e0
+  tag: latest
   pullPolicy: IfNotPresent
 
 service:
@@ -68,3 +68,11 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+database:
+  host: postgres
+  port: 5432
+  name: spring_jpa
+  existingSecret: postgres-secret
+  usernameKey: postgres-user
+  passwordKey: postgres-password
