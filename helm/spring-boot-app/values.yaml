@@ -49,6 +49,16 @@ autoscaling:
 
 seedJob:
   enabled: false
+  springProfile: "seed"
+  backoffLimit: 0
+  ttlSecondsAfterFinished: 300
+  resources:
+    requests:
+      cpu: 100m
+      memory: 256Mi
+    limits:
+      cpu: 250m
+      memory: 512Mi
 
 ingress:
   enabled: false

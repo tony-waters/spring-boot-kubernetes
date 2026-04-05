@@ -146,7 +146,20 @@ resource "helm_release" "spring_boot_app" {
       }
 
       seedJob = {
-        enabled = var.seed_job_enabled
+        enabled                 = var.seed_job_enabled
+        springProfile           = "seed"
+        backoffLimit            = 0
+        ttlSecondsAfterFinished = 300
+        resources = {
+          requests = {
+            cpu    = "100m"
+            memory = "256Mi"
+          }
+          limits = {
+            cpu    = "250m"
+            memory = "512Mi"
+          }
+        }
       }
 
       ingress = {
