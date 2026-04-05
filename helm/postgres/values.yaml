@@ -1,14 +1,21 @@
-replicaCount: 1
+nameOverride: ""
+fullnameOverride: ""
+
+image:
+  repository: postgres
+  tag: "16.2"
+  pullPolicy: IfNotPresent
 
 database:
-  mode: internal # internal | external
+  mode: internal
 
   internal:
     enabled: true
     serviceName: postgres
     port: 5432
-    dbName: customerdb
-    username: appuser
+    dbName: spring_jpa
+    username: spring_user
+    password: change-me-now
     existingSecret: ""
     secretName: postgres-secret
     storageClassName: ""
@@ -29,4 +36,3 @@ database:
     usernameKey: username
     passwordKey: password
     dbNameKey: database
-

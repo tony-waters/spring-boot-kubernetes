@@ -33,6 +33,16 @@ spec:
                 configMapKeyRef:
                   name: {{ include "spring-boot-app.fullname" . }}
                   key: JAVA_OPTS
+            - name: SPRING_DATASOURCE_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.database.existingSecret }}
+                  key: {{ .Values.database.usernameKey }}
+            - name: SPRING_DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.database.existingSecret }}
+                  key: {{ .Values.database.passwordKey }}
           livenessProbe:
             httpGet:
               path: {{ .Values.probes.liveness.path }}

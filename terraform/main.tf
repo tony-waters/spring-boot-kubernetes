@@ -1,4 +1,3 @@
-
 resource "kubernetes_namespace" "app" {
   metadata {
     name = var.namespace
@@ -8,6 +7,68 @@ resource "kubernetes_namespace" "app" {
       "app.kubernetes.io/part-of"    = "spring-boot-app-demo"
     }
   }
+}
+
+resource "helm_release" "postgres" {
+  name             = var.postgres_release_name
+  namespace        = kubernetes_namespace.app.metadata[0].name
+  create_namespace = false
+
+  chart = "${path.module}/../helm/postgres"
+
+  atomic          = false
+  cleanup_on_fail = false
+  wait            = true
+  timeout         = 300
+
+  values = [
+    yamlencode({
+      image = {
+        repository = "postgres"
+        tag        = "16.2"
+        pullPolicy = "IfNotPresent"
+      }
+
+      database = {
+        mode = "internal"
+
+        internal = {
+          enabled          = true
+          serviceName      = var.db_service_name
+          port             = var.db_port
+          dbName           = var.db_name
+          username         = var.db_username
+          password         = var.db_password
+          existingSecret   = ""
+          secretName       = var.db_secret_name
+          storageClassName = var.db_storage_class_name
+          storageSize      = var.db_storage_size
+          resources = {
+            requests = {
+              cpu    = "100m"
+              memory = "256Mi"
+            }
+            limits = {
+              cpu    = "500m"
+              memory = "512Mi"
+            }
+          }
+        }
+
+        external = {
+          host           = ""
+          port           = 5432
+          dbName         = ""
+          existingSecret = ""
+          usernameKey    = "username"
+          passwordKey    = "password"
+          dbNameKey      = "database"
+        }
+      }
+    })
+  ]
+
+  depends_on = [kubernetes_namespace.app]
 }
 
 resource "helm_release" "spring_boot_app" {
@@ -56,12 +117,12 @@ resource "helm_release" "spring_boot_app" {
       }
 
       app = {
-        javaOpts            = "-Xms256m -Xmx512m"
+        javaOpts             = "-Xms256m -Xmx512m"
         springProfilesActive = "default"
       }
 
       config = {
-        serverPort                           = "8080"
+        serverPort                            = "8080"
         managementEndpointsWebExposureInclude = "health,info"
         managementEndpointHealthProbesEnabled = "true"
       }
@@ -89,8 +150,8 @@ resource "helm_release" "spring_boot_app" {
       }
 
       ingress = {
-        enabled   = var.ingress_enabled
-        className = var.ingress_class_name
+        enabled     = var.ingress_enabled
+        className   = var.ingress_class_name
         annotations = {}
         hosts = [
           {
@@ -105,8 +166,21 @@ resource "helm_release" "spring_boot_app" {
         ]
         tls = []
       }
+
+      database = {
+        host           = var.db_service_name
+        port           = var.db_port
+        name           = var.db_name
+        existingSecret = var.db_secret_name
+        usernameKey    = "postgres-user"
+        passwordKey    = "postgres-password"
+        ddlAuto        = var.db_ddl_auto
+      }
     })
   ]
 
-  depends_on = [kubernetes_namespace.app]
+  depends_on = [
+    kubernetes_namespace.app,
+    helm_release.postgres
+  ]
 }

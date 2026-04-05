@@ -76,3 +76,4 @@ database:
   existingSecret: postgres-secret
   usernameKey: postgres-user
   passwordKey: postgres-password
+  ddlAuto: update

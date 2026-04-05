@@ -2,24 +2,25 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: {{ .Values.database.internal.serviceName }}
+  name: {{ include "postgres.serviceName" . }}
+  labels:
+    {{- include "postgres.labels" . | nindent 4 }}
 spec:
-  serviceName: {{ .Values.database.internal.serviceName }}
+  serviceName: {{ include "postgres.serviceName" . }}
   replicas: 1
   selector:
     matchLabels:
-      app.kubernetes.io/name: {{ include "app.name" . }}-postgres
-      app.kubernetes.io/instance: {{ .Release.Name }}
+      {{- include "postgres.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: {{ include "app.name" . }}-postgres
-        app.kubernetes.io/instance: {{ .Release.Name }}
+        {{- include "postgres.selectorLabels" . | nindent 8 }}
     spec:
+      terminationGracePeriodSeconds: 30
       containers:
         - name: postgres
-          image: postgres:16
-          imagePullPolicy: IfNotPresent
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
           ports:
             - containerPort: 5432
               name: postgres
@@ -27,18 +28,18 @@ spec:
             - name: POSTGRES_USER
               valueFrom:
                 secretKeyRef:
-                  name: {{ include "app.db.secretName" . }}
-                  key: postgres-user
+                  name: {{ include "postgres.db.secretName" . }}
+                  key: {{ include "postgres.db.usernameKey" . }}
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ include "app.db.secretName" . }}
-                  key: postgres-password
+                  name: {{ include "postgres.db.secretName" . }}
+                  key: {{ include "postgres.db.passwordKey" . }}
             - name: POSTGRES_DB
               valueFrom:
                 secretKeyRef:
-                  name: {{ include "app.db.secretName" . }}
-                  key: postgres-db
+                  name: {{ include "postgres.db.secretName" . }}
+                  key: {{ include "postgres.db.nameKey" . }}
           readinessProbe:
             exec:
               command:
@@ -60,16 +61,18 @@ spec:
             timeoutSeconds: 3
             failureThreshold: 6
           resources:
-{{ toYaml .Values.database.internal.resources | indent 12 }}
+            {{- toYaml .Values.database.internal.resources | nindent 12 }}
           volumeMounts:
             - name: postgres-data
               mountPath: /var/lib/postgresql/data
-      terminationGracePeriodSeconds: 30
   volumeClaimTemplates:
     - metadata:
         name: postgres-data
+        labels:
+          {{- include "postgres.labels" . | nindent 10 }}
       spec:
-        accessModes: ["ReadWriteOnce"]
+        accessModes:
+          - ReadWriteOnce
         {{- if .Values.database.internal.storageClassName }}
         storageClassName: {{ .Values.database.internal.storageClassName }}
         {{- end }}
