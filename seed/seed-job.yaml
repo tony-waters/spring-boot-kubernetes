@@ -2,33 +2,38 @@ apiVersion: batch/v1
 kind: Job
 metadata:
   name: spring-boot-app-seed
-  namespace: spring-boot-app-demo
 spec:
   backoffLimit: 0
-  ttlSecondsAfterFinished: 300   # auto-cleanup after 5 mins (optional but nice)
+  ttlSecondsAfterFinished: 300
   template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: spring-boot-app-seed
     spec:
       restartPolicy: Never
-
       containers:
         - name: seed
           image: ghcr.io/tony-waters/spring-boot-app:latest
           imagePullPolicy: IfNotPresent
-
-          # Reuse SAME config as app
           envFrom:
             - configMapRef:
                 name: spring-boot-app-spring-boot-app
-
-          # Only override what we need
           env:
             - name: SPRING_PROFILES_ACTIVE
-              value: seed
-
-            # Optional JVM tuning (reuse if you already have this key)
+              value: "seed"
             - name: JAVA_TOOL_OPTIONS
               valueFrom:
                 configMapKeyRef:
                   name: spring-boot-app-spring-boot-app
                   key: JAVA_OPTS
                   optional: true
+            - name: SPRING_DATASOURCE_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: postgres-user
+            - name: SPRING_DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: postgres-password

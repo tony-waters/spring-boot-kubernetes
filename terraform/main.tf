@@ -145,24 +145,6 @@ resource "helm_release" "spring_boot_app" {
         targetCPUUtilizationPercentage = var.autoscaling_target_cpu
       }
 
-      seedJob = {
-        # enabled                 = var.seed_job_enabled
-        enabled                 = true
-        springProfile           = "seed"
-        backoffLimit            = 0
-        ttlSecondsAfterFinished = 300
-        resources = {
-          requests = {
-            cpu    = "100m"
-            memory = "256Mi"
-          }
-          limits = {
-            cpu    = "250m"
-            memory = "512Mi"
-          }
-        }
-      }
-
       ingress = {
         enabled     = var.ingress_enabled
         className   = var.ingress_class_name

@@ -1,5 +1,3 @@
 
-cd terraform
-terraform destroy -var-file=terraform.tfvars.example -auto-approve
+cd terraform && terraform destroy -var-file=terraform.tfvars.example -auto-approve
 kind delete cluster
-cd ..

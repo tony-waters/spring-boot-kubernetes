@@ -1,4 +1,4 @@
 
 
-source ./down.sh
-source ./up.sh
+bash ./down.sh
+bash ./up.sh

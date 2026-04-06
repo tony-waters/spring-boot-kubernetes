@@ -74,12 +74,6 @@ variable "autoscaling_target_cpu" {
   default     = 70
 }
 
-variable "seed_job_enabled" {
-  description = "Whether seed job is enabled"
-  type        = bool
-  default     = false
-}
-
 variable "ingress_enabled" {
   description = "Whether ingress is enabled"
   type        = bool

@@ -15,7 +15,6 @@ autoscaling_min_replicas  = 1
 autoscaling_max_replicas  = 3
 autoscaling_target_cpu    = 70
 
-seed_job_enabled   = false
 ingress_enabled    = false
 ingress_class_name = ""
 host               = "spring-boot-app.local"
