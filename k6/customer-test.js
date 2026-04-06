@@ -9,14 +9,14 @@ export const options = {
     duration: '1m',
 };
 
-// Base URL (allows override via environment variable)
+// Base URL (allow override via environment variable)
 // e.g. k6 run -e BASE_URL=http://my-service customer-test.js
 const BASE_URL = __ENV.BASE_URL || 'http://localhost:8080';
 
 export default function () {
 
     // --- STEP 1: Fetch a page of customers ---
-    // We randomise the page to avoid hammering page=0 only
+    // Randomise the page to avoid hammering page=0 only
     const page = Math.floor(Math.random() * 10);
     const size = 20;
 
@@ -50,8 +50,7 @@ export default function () {
         return;
     }
 
-    // --- STEP 2: Pick a REAL customer ID ---
-    // This avoids random-ID guessing
+    // --- STEP 2: Pick a customer ID ---
     const chosen = customers[Math.floor(Math.random() * customers.length)];
     const id = chosen.id;
 
@@ -64,7 +63,7 @@ export default function () {
     });
 
     // --- STEP 4: Think time ---
-    // Simulates a real user pause between actions
+    // Simulate a real user pause between actions
     // Prevents unrealistically tight request loops
     sleep(1);
 }
