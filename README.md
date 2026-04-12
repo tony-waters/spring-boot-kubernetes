@@ -1,61 +1,17 @@
 # Spring Boot JPA + Kubernetes Demo
+
+See [this post](https://tony-waters.github.io/2026/03/03/demo-spring-rest-app.html) to get things up and running using `kind`.
+
 **Customers / Tickets / Tags (Command–Query Separation)**
 
-A production-style backend demonstrating:
+A Spring REST application demonstrating:
 
 - Aggregate design with enforced invariants
 - Command / Query separation (CQRS-lite)
 - JPA projections for efficient reads
 - Kubernetes deployment via Helm + Terraform
 - Deterministic seed data (separate job)
-- Real load testing using k6
-
----
-
-## Why This Project Exists
-
-Most Spring Boot demos stop at CRUD.
-
-This one goes further:
-
-- Models a real aggregate (`Customer → Tickets → Tags`)
-- Enforces business rules inside entities
-- Separates write logic from read models
-- Deploys to Kubernetes
-- Verifies behaviour under load (not just unit tests)
-
----
-
-## Architecture (High Level)
-
-```
-        ┌──────────────────────────────┐
-        │        Controllers           │
-        │  (REST API: /api/customers) │
-        └──────────────┬───────────────┘
-                       │
-        ┌──────────────▼───────────────┐
-        │         Services             │
-        │  Command + Query separation  │
-        └──────────────┬───────────────┘
-                       │
-     ┌─────────────────┴─────────────────┐
-     │                                   │
-┌────▼─────┐                     ┌───────▼────────┐
-│ Command  │                     │ Query           │
-│ Side     │                     │ Side            │
-│ (Domain) │                     │ (DTOs)          │
-└────┬─────┘                     └───────┬────────┘
-     │                                   │
-┌────▼──────────────┐          ┌─────────▼────────────┐
-│ Entities          │          │ Projection Queries   │
-│ - Customer        │          │ (no entity leakage)  │
-│ - Ticket          │          └──────────────────────┘
-│ - Tag             │
-└───────────────────┘
-
-              PostgreSQL
-```
+- Load testing using k6
 
 ---
 
@@ -116,7 +72,7 @@ Seed data is **not tied to app startup**.
 Run manually:
 
 ```bash
-kubectl create job --from=cronjob/seed-job seed-job-manual
+cd seed && ./run-seed.sh
 ```
 
 ---
@@ -162,33 +118,6 @@ k6 run customer-behaviour-write-test.js
 
 ---
 
-## Example Flow Tested
-
-1. Create customer
-2. Raise ticket
-3. Add tag
-4. Verify tag-filtered query
-5. Resolve ticket
-6. Verify status-filtered query
-7. Fetch ticket detail
-
-All under concurrent load.
-
----
-
-## Performance Snapshot
-
-Typical results (local / port-forward):
-
-| Metric | Value |
-|------|------|
-| Read latency (avg) | ~1–6 ms |
-| Write latency (avg) | ~10–35 ms |
-| Failure rate | 0% |
-| Throughput | 50–200 req/s |
-
----
-
 ## Testing Strategy
 
 - **Unit / Data tests**
@@ -199,16 +128,6 @@ Typical results (local / port-forward):
 
 - **k6 tests**
     - end-to-end + concurrency validation
-
----
-
-## Key Takeaways
-
-- JPA is fine — if you control your aggregates
-- DTO projections beat exposing entities
-- CQRS-lite keeps complexity manageable
-- Seed jobs > startup data hacks
-- Load testing catches real problems early
 
 ---
 
@@ -230,5 +149,3 @@ A realistic backend demonstrating:
 - separation of concerns
 - Kubernetes deployment
 - and verified behaviour under load
-
-Not just CRUD — something closer to production thinking.
