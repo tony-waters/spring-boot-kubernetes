@@ -1,0 +1,33 @@
+apiVersion: v2
+name: springapp
+description: Parent chart for app
+version: 0.1.0
+appVersion: 1.0.0
+
+dependencies:
+  - name: namespaces
+    version: "0.1.0"
+    repository: "file://./namespaces"
+    condition: namespaces.enabled
+
+  - name: gateway
+    version: "0.1.0"
+    repository: "file://./gateway"
+    condition: gateway.enabled
+
+  - name: postgres
+    version: "0.1.0"
+    repository: "file://./postgres"
+    condition: postgres.enabled
+
+  - name: application
+    version: "0.1.0"
+    repository: "file://./application"
+    condition: application.enabled
+
+  - name: pgadmin
+    version: "0.1.0"
+    repository: "file://./pgadmin"
+    condition: pgadmin.enabled
+
+

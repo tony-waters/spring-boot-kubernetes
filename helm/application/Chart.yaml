@@ -1,5 +1,5 @@
 apiVersion: v2
-name: spring-boot-app
+name: application
 description: Spring Boot JPA aggregate + CQRS demo application
 type: application
 version: 0.1.0

@@ -1,50 +1,45 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "spring-boot-app.fullname" . }}
-  labels:
-    {{- include "spring-boot-app.labels" . | nindent 4 }}
+  name: spring-boot-app
+  namespace: application
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      {{- include "spring-boot-app.selectorLabels" . | nindent 6 }}
+      app: spring-boot-app
   template:
     metadata:
       labels:
-        {{- include "spring-boot-app.selectorLabels" . | nindent 8 }}
-      {{- with .Values.podAnnotations }}
-      annotations:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
+        app: spring-boot-app
     spec:
       containers:
         - name: spring-boot-app
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          image: "ghcr.io/tony-waters/spring-boot-app:latest"
+          imagePullPolicy: IfNotPresent
           ports:
             - name: http
-              containerPort: {{ .Values.service.targetPort }}
+              containerPort: 8080
               protocol: TCP
           envFrom:
             - configMapRef:
-                name: {{ include "spring-boot-app.fullname" . }}
+                name: spring-boot-app
           env:
             - name: JAVA_TOOL_OPTIONS
               valueFrom:
                 configMapKeyRef:
-                  name: {{ include "spring-boot-app.fullname" . }}
+                  name: spring-boot-app
                   key: JAVA_OPTS
             - name: SPRING_DATASOURCE_USERNAME
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.database.existingSecret }}
-                  key: {{ .Values.database.usernameKey }}
+                  name: postgres-secret
+                  key: postgres-user
             - name: SPRING_DATASOURCE_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.database.existingSecret }}
-                  key: {{ .Values.database.passwordKey }}
+                  name: postgres-secret
+                  key: postgres-password
           livenessProbe:
             httpGet:
               path: {{ .Values.probes.liveness.path }}
@@ -63,15 +58,3 @@ spec:
             failureThreshold: {{ .Values.probes.readiness.failureThreshold }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
-      {{- with .Values.nodeSelector }}
-      nodeSelector:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with .Values.tolerations }}
-      tolerations:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with .Values.affinity }}
-      affinity:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}

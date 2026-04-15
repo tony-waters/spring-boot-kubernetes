@@ -1,14 +1,3 @@
-replicaCount: 1
-
-image:
-  repository: ghcr.io/tony-waters/spring-boot-app
-  tag: latest
-  pullPolicy: IfNotPresent
-
-service:
-  type: ClusterIP
-  port: 80
-  targetPort: 8080
 
 app:
   javaOpts: "-Xms256m -Xmx512m"
@@ -67,7 +56,7 @@ tolerations: []
 affinity: {}
 
 database:
-  host: postgres
+  host: postgres.postgres
   port: 5432
   name: spring_jpa
   existingSecret: postgres-secret

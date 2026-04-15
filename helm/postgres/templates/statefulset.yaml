@@ -1,20 +1,18 @@
-{{- if and (eq .Values.database.mode "internal") .Values.database.internal.enabled }}
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: {{ include "postgres.serviceName" . }}
-  labels:
-    {{- include "postgres.labels" . | nindent 4 }}
+  name: postgres
+  namespace: postgres
 spec:
-  serviceName: {{ include "postgres.serviceName" . }}
+  serviceName: postgres
   replicas: 1
   selector:
     matchLabels:
-      {{- include "postgres.selectorLabels" . | nindent 6 }}
+      app: postgres
   template:
     metadata:
       labels:
-        {{- include "postgres.selectorLabels" . | nindent 8 }}
+        app: postgres
     spec:
       terminationGracePeriodSeconds: 30
       containers:
@@ -30,18 +28,18 @@ spec:
             - name: POSTGRES_USER
               valueFrom:
                 secretKeyRef:
-                  name: {{ include "postgres.db.secretName" . }}
-                  key: {{ include "postgres.db.usernameKey" . }}
+                  name: postgres
+                  key: postgres-user
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ include "postgres.db.secretName" . }}
-                  key: {{ include "postgres.db.passwordKey" . }}
+                  name: postgres
+                  key: postgres-password
             - name: POSTGRES_DB
               valueFrom:
                 secretKeyRef:
-                  name: {{ include "postgres.db.secretName" . }}
-                  key: {{ include "postgres.db.nameKey" . }}
+                  name: postgres
+                  key: postgres-db
           readinessProbe:
             exec:
               command:
@@ -63,22 +61,16 @@ spec:
             timeoutSeconds: 3
             failureThreshold: 6
           resources:
-            {{- toYaml .Values.database.internal.resources | nindent 12 }}
+            {{- toYaml .Values.database.resources | nindent 12 }}
           volumeMounts:
             - name: postgres-data
               mountPath: /var/lib/postgresql/data
   volumeClaimTemplates:
     - metadata:
         name: postgres-data
-        labels:
-          {{- include "postgres.labels" . | nindent 10 }}
       spec:
         accessModes:
           - ReadWriteOnce
-        {{- if .Values.database.internal.storageClassName }}
-        storageClassName: {{ .Values.database.internal.storageClassName }}
-        {{- end }}
         resources:
           requests:
             storage: {{ .Values.database.internal.storageSize }}
-{{- end }}

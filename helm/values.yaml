@@ -1,0 +1,14 @@
+namespaces:
+  enabled: true
+
+gateway:
+  enabled: true
+
+postgres:
+  enabled: true
+
+application:
+  enabled: true
+
+pgadmin:
+  enabled: true
