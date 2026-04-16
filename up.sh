@@ -5,7 +5,7 @@ kind create cluster --image kindest/node:v1.33.4
 #cd ../seed && ./run-seed.sh
 #
 
-VERSION="$(basename "$(curl -s -L -o /dev/null -w '%{url_effective}' https://github.com/kubernetes-sigs/cloud-provider-kind/releases/latest)")"
+#VERSION="$(basename "$(curl -s -L -o /dev/null -w '%{url_effective}' https://github.com/kubernetes-sigs/cloud-provider-kind/releases/latest)")"
 
 docker rm -f cloud-provider-kind 2>/dev/null || true
 
@@ -14,7 +14,7 @@ docker run -d \
   --rm \
   --network host \
   -v /var/run/docker.sock:/var/run/docker.sock \
-  registry.k8s.io/cloud-provider-kind/cloud-controller-manager:${VERSION}
+  registry.k8s.io/cloud-provider-kind/cloud-controller-manager:v0.10.0
 
 sleep 2
 
