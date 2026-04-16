@@ -17,8 +17,8 @@ spec:
       terminationGracePeriodSeconds: 30
       containers:
         - name: postgres
-          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          image: postgres:16.2
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 5432
               name: postgres
@@ -61,7 +61,12 @@ spec:
             timeoutSeconds: 3
             failureThreshold: 6
           resources:
-            {{- toYaml .Values.database.resources | nindent 12 }}
+            requests:
+              cpu: 100m
+              memory: 256Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
           volumeMounts:
             - name: postgres-data
               mountPath: /var/lib/postgresql/data
@@ -73,4 +78,4 @@ spec:
           - ReadWriteOnce
         resources:
           requests:
-            storage: {{ .Values.database.internal.storageSize }}
+            storage: 5Gi

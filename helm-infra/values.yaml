@@ -7,8 +7,5 @@ gateway:
 postgres:
   enabled: true
 
-application:
-  enabled: true
-
 pgadmin:
   enabled: true

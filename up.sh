@@ -22,12 +22,8 @@ kubectl get gatewayclass
 kubectl get crd | grep gateway.networking.k8s.io
 
 
-cd helm
-helm dependency build
-helm install springapp .
-cd ..
-
-kubectl apply -f helm/prometheus/httproute.yaml
-
-
+#cd helm
+#helm dependency build
+#helm install springapp .
+#cd ..
 

@@ -1,16 +1,16 @@
-image:
-  repository: postgres
-  tag: "16.2"
-  pullPolicy: IfNotPresent
+#image:
+#  repository: postgres
+#  tag: "16.2"
+#  pullPolicy: IfNotPresent
 
-database:
-  resources:
-    requests:
-      cpu: 100m
-      memory: 256Mi
-    limits:
-      cpu: 500m
-      memory: 512Mi
+#database:
+#  resources:
+#    requests:
+#      cpu: 100m
+#      memory: 256Mi
+#    limits:
+#      cpu: 500m
+#      memory: 512Mi
 
 #  internal:
 #    enabled: true
