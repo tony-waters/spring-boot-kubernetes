@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.names.config }}
+  namespace: {{ .Values.namespaces.app }}
+data:
+  servers.json: |
+    {
+      "Servers": {
+        "1": {
+          "Name": "PostgreSQL DB",
+          "Group": "Servers",
+          "Port": 5432,
+          "SSLMode": "prefer",
+          "Username": "spring_user",
+          "Host": "postgres.postgres.svc.cluster.local",
+          "MaintenanceDB": "spring_jpa"
+        }
+      }
+    }

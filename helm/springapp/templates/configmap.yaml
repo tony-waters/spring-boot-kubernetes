@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ .Values.name }}
+  namespace: {{ .Values.namespace }}
+data:
+  SERVER_PORT: "8080"
+  SPRING_PROFILES_ACTIVE: "default"
+  MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE: "health,info"
+  MANAGEMENT_ENDPOINT_HEALTH_PROBES_ENABLED: "true"
+  JAVA_OPTS: "-Xms256m -Xmx512m"
+  SPRING_DATASOURCE_URL: "jdbc:postgresql://postgres.postgres:5432/spring_jpa"
+  SPRING_DATASOURCE_DRIVER_CLASS_NAME: "org.postgresql.Driver"
+  SPRING_JPA_HIBERNATE_DDL_AUTO: "update"

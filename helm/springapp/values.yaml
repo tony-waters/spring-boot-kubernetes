@@ -1,0 +1,14 @@
+replicaCount: 1
+
+name: springapp
+namespace: application
+
+route:
+  hostname: application
+  gateway:
+    name: application-gateway
+    namespace: application-gateway
+
+postgres:
+  secret: postgres-secret
+

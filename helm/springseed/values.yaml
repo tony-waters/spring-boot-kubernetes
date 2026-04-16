@@ -1,0 +1,18 @@
+
+
+name: springseed
+namespace: application
+
+postgres:
+  secret: postgres-secret-seeder
+
+
+
+---
+#names:
+#  job: spring-boot-app-seed
+#  appConfig: spring-boot-app
+#  postgresSecret: postgres-secret
+#
+#namespaces:
+#  app: application

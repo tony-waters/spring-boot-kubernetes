@@ -1,0 +1,27 @@
+
+## Service configuration
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 80
+  portName: http
+
+## Network policy configuration
+networkPolicy:
+  enabled: true
+
+## HTTP route configuration
+httpRoute:
+  enabled: true
+  annotations: {}
+  hostnames: []
+  parentRefs:
+    - group: gateway.networking.k8s.io
+      kind: Gateway
+      name: gateway
+      namespace: gateway
+  matches:
+    - path:
+        type: PathPrefix
+        value: /
+

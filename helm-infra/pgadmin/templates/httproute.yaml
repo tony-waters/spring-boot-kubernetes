@@ -1,0 +1,19 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: {{ .Values.names.route }}
+  namespace: {{ .Values.namespaces.app }}
+spec:
+  parentRefs:
+    - kind: Gateway
+      name: {{ .Values.names.gateway }}
+      namespace: {{ .Values.namespaces.gateway }}
+      sectionName: default
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /pgadmin
+      backendRefs:
+        - name: {{ .Values.names.app }}
+          port: 80

@@ -1,0 +1,40 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ .Values.name }}
+  namespace: {{ .Values.namespace }}
+spec:
+  backoffLimit: 0
+  ttlSecondsAfterFinished: 300
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ .Values.name }}
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: seed
+          image: ghcr.io/tony-waters/spring-boot-app:latest
+          imagePullPolicy: IfNotPresent
+          envFrom:
+            - configMapRef:
+                name: {{ .Values.name }}
+          env:
+            - name: SPRING_PROFILES_ACTIVE
+              value: "seed"
+            - name: JAVA_TOOL_OPTIONS
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.name }}
+                  key: JAVA_OPTS
+                  optional: true
+            - name: SPRING_DATASOURCE_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.postgres.secret }}
+                  key: postgres-user
+            - name: SPRING_DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.postgres.secret }}
+                  key: postgres-password

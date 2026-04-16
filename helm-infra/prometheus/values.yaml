@@ -1,0 +1,24 @@
+#prometheus:
+#  route:
+#    main:
+#      enabled: true
+#      parentRefs:
+#        - group: gateway.networking.k8s.io
+#          kind: Gateway
+#          name: application-gateway
+#          namespace: application-gateway
+#      additionalRules:
+#        - matches:
+#            - path:
+#                type: PathPrefix
+#                value: /
+#          backendRefs:
+#            - name: prometheus-grafana
+#              port: 80
+
+grafana:
+  grafana.ini:
+    server:
+      domain: grafana-host
+      root_url: http://grafana-host/grafana/
+      serve_from_sub_path: true

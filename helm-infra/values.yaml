@@ -1,0 +1,36 @@
+namespaces:
+  enabled: true
+  names:
+    application: application
+    gateway: application-gateway
+    postgres: postgres
+    pgadmin: pgadmin
+
+gateway:
+  enabled: true
+  names:
+    gateway: application-gateway
+  namespaces:
+    gateway: application-gateway
+
+postgres:
+  enabled: true
+  names:
+    app: postgres
+    secret: postgres
+    volumeClaim: postgres-data
+  namespaces:
+    app: postgres
+
+pgadmin:
+  enabled: false
+  names:
+    app: pgadmin
+    secret: pgadmin
+    route: pgadmin
+    config: pgadmin
+    volumeClaim: pgadmin-data
+    gateway: application-gateway
+  namespaces:
+    app: pgadmin
+    gateway: application-gateway

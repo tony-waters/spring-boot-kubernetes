@@ -1,0 +1,6 @@
+apiVersion: v2
+name: springseed
+description: Spring Boot JPA aggregate + CQRS demo application - seeder
+type: application
+version: 0.1.0
+appVersion: "0.0.1-SNAPSHOT"
