@@ -1,43 +1,36 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: pgadmin
-  namespace: pgadmin
+  name: {{ .Values.pgadmin.names.app }}
+  namespace: {{ .Values.pgadmin.namespaces.app }}
 spec:
-  serviceName: pgadmin
+  serviceName: {{ .Values.pgadmin.names.app }}
   podManagementPolicy: Parallel
   replicas: 1
   updateStrategy:
     type: RollingUpdate
   selector:
     matchLabels:
-      app: pgadmin
+      app: {{ .Values.pgadmin.names.app }}
   template:
     metadata:
       labels:
-        app: pgadmin
+        app: {{ .Values.pgadmin.names.app }}
     spec:
       terminationGracePeriodSeconds: 10
-{{/*      securityContext:*/}}
-{{/*        fsGroup: 5050*/}}
       containers:
-        - name: pgadmin
+        - name: {{ .Values.pgadmin.names.app }}
           image: dpage/pgadmin4:9.14
-{{/*          securityContext:*/}}
-{{/*            runAsUser: 5050*/}}
-{{/*            runAsGroup: 5050*/}}
           imagePullPolicy: Always
           env:
             - name: SCRIPT_NAME
               value: /pgadmin
-{{/*            - name: PGADMIN_REPLACE_SERVERS_ON_STARTUP*/}}
-{{/*              value: "True"*/}}
             - name: PGADMIN_DEFAULT_EMAIL
               value: user@domain.com
             - name: PGADMIN_DEFAULT_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: pgadmin
+                  name: {{ .Values.pgadmin.names.secret }}
                   key: pgadmin-password
           ports:
             - name: http
@@ -48,17 +41,18 @@ spec:
               mountPath: /pgadmin4/servers.json
               subPath: servers.json
               readOnly: true
-            - name: pgadmin-data
+            - name: {{ .Values.pgadmin.names.volumeClaim }}
               mountPath: /var/lib/pgadmin
       volumes:
         - name: pgadmin-config
           configMap:
-            name: pgadmin
+            name: {{ .Values.pgadmin.names.config }}
   volumeClaimTemplates:
     - metadata:
-        name: pgadmin-data
+        name: {{ .Values.pgadmin.names.volumeClaim }}
       spec:
-        accessModes: [ "ReadWriteOnce" ]
+        accessModes:
+          - ReadWriteOnce
         resources:
           requests:
             storage: 3Gi

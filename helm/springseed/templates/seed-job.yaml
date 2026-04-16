@@ -1,14 +1,15 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: spring-boot-app-seed
+  name: {{ .Values.name }}
+  namespace: {{ .Values.namespace }}
 spec:
   backoffLimit: 0
   ttlSecondsAfterFinished: 300
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: spring-boot-app-seed
+        app.kubernetes.io/name: {{ .Values.name }}
     spec:
       restartPolicy: Never
       containers:
@@ -17,23 +18,23 @@ spec:
           imagePullPolicy: IfNotPresent
           envFrom:
             - configMapRef:
-                name: spring-boot-app
+                name: {{ .Values.name }}
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: "seed"
             - name: JAVA_TOOL_OPTIONS
               valueFrom:
                 configMapKeyRef:
-                  name: spring-boot-app
+                  name: {{ .Values.name }}
                   key: JAVA_OPTS
                   optional: true
             - name: SPRING_DATASOURCE_USERNAME
               valueFrom:
                 secretKeyRef:
-                  name: postgres-secret
+                  name: {{ .Values.postgres.secret }}
                   key: postgres-user
             - name: SPRING_DATASOURCE_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: postgres-secret
+                  name: {{ .Values.postgres.secret }}
                   key: postgres-password

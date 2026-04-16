@@ -1,8 +1,8 @@
 apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
 metadata:
-  name: application-gateway
-  namespace: application-gateway
+  name: {{ .Values.names.gateway }}
+  namespace: {{ .Values.namespaces.gateway }}
 spec:
   gatewayClassName: cloud-provider-kind
   listeners:

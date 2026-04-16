@@ -1,65 +1,18 @@
 
-app:
-  javaOpts: "-Xms256m -Xmx512m"
-  springProfilesActive: "default"
 
-config:
-  serverPort: "8080"
-  managementEndpointsWebExposureInclude: "health,info"
-  managementEndpointHealthProbesEnabled: "true"
+name: springseed
+namespace: application
 
-resources:
-  requests:
-    cpu: 250m
-    memory: 512Mi
-  limits:
-    cpu: 500m
-    memory: 1Gi
+postgres:
+  secret: postgres-secret-seeder
 
-probes:
-  liveness:
-    path: "/actuator/health/liveness"
-    initialDelaySeconds: 30
-    periodSeconds: 10
-    timeoutSeconds: 2
-    failureThreshold: 3
-  readiness:
-    path: "/actuator/health/readiness"
-    initialDelaySeconds: 20
-    periodSeconds: 10
-    timeoutSeconds: 2
-    failureThreshold: 3
 
-autoscaling:
-  enabled: false
-  minReplicas: 1
-  maxReplicas: 3
-  targetCPUUtilizationPercentage: 70
 
-ingress:
-  enabled: false
-  className: ""
-  annotations: {}
-  hosts:
-    - host: spring-boot-app.local
-      paths:
-        - path: /
-          pathType: Prefix
-  tls: []
-
-podAnnotations: {}
-
-nodeSelector: {}
-
-tolerations: []
-
-affinity: {}
-
-database:
-  host: postgres.postgres
-  port: 5432
-  name: spring_jpa
-  existingSecret: postgres-secret
-  usernameKey: postgres-user
-  passwordKey: postgres-password
-  ddlAuto: update
+---
+#names:
+#  job: spring-boot-app-seed
+#  appConfig: spring-boot-app
+#  postgresSecret: postgres-secret
+#
+#namespaces:
+#  app: application

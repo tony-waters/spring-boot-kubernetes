@@ -1,6 +1,6 @@
 apiVersion: v2
 name: springinfra
-description: Parent chart for app
+description: Infrastructure chart for Spring Boot demo app
 version: 0.1.0
 appVersion: 1.0.0
 
@@ -20,9 +20,7 @@ dependencies:
     repository: "file://./postgres"
     condition: postgres.enabled
 
-#  - name: pgadmin
-#    version: "0.1.0"
-#    repository: "file://./pgadmin"
-#    condition: pgadmin.enabled
-
-
+  - name: pgadmin
+    version: "0.1.0"
+    repository: "file://./pgadmin"
+    condition: pgadmin.enabled

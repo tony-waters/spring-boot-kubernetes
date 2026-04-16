@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: spring-boot-app
-  namespace: application
+  name: {{ .Values.name }}
+  namespace: {{ .Values.namespace }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: spring-boot-app
+      app: {{ .Values.name }}
   template:
     metadata:
       labels:
-        app: spring-boot-app
+        app: {{ .Values.name }}
     spec:
       containers:
-        - name: spring-boot-app
+        - name: {{ .Values.name }}
           image: "ghcr.io/tony-waters/spring-boot-app:latest"
           imagePullPolicy: IfNotPresent
           ports:
@@ -23,38 +23,43 @@ spec:
               protocol: TCP
           envFrom:
             - configMapRef:
-                name: spring-boot-app
+                name: {{ .Values.name }}
           env:
             - name: JAVA_TOOL_OPTIONS
               valueFrom:
                 configMapKeyRef:
-                  name: spring-boot-app
+                  name: {{ .Values.name }}
                   key: JAVA_OPTS
             - name: SPRING_DATASOURCE_USERNAME
               valueFrom:
                 secretKeyRef:
-                  name: postgres-secret
+                  name: {{ .Values.postgres.secret }}
                   key: postgres-user
             - name: SPRING_DATASOURCE_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: postgres-secret
+                  name: {{ .Values.postgres.secret }}
                   key: postgres-password
           livenessProbe:
             httpGet:
-              path: {{ .Values.probes.liveness.path }}
+              path: /actuator/health/liveness
               port: http
-            initialDelaySeconds: {{ .Values.probes.liveness.initialDelaySeconds }}
-            periodSeconds: {{ .Values.probes.liveness.periodSeconds }}
-            timeoutSeconds: {{ .Values.probes.liveness.timeoutSeconds }}
-            failureThreshold: {{ .Values.probes.liveness.failureThreshold }}
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 2
+            failureThreshold: 3
           readinessProbe:
             httpGet:
-              path: {{ .Values.probes.readiness.path }}
+              path: /actuator/health/readiness
               port: http
-            initialDelaySeconds: {{ .Values.probes.readiness.initialDelaySeconds }}
-            periodSeconds: {{ .Values.probes.readiness.periodSeconds }}
-            timeoutSeconds: {{ .Values.probes.readiness.timeoutSeconds }}
-            failureThreshold: {{ .Values.probes.readiness.failureThreshold }}
+            initialDelaySeconds: 20
+            periodSeconds: 10
+            timeoutSeconds: 2
+            failureThreshold: 3
           resources:
-            {{- toYaml .Values.resources | nindent 12 }}
+            requests:
+              cpu: 250m
+              memory: 512Mi
+            limits:
+              cpu: 500m
+              memory: 1Gi
