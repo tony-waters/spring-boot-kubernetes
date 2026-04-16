@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: spring-boot-app
+  namespace: application
+spec:
+  type: ClusterIP
+  selector:
+    app: spring-boot-app
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 8080
