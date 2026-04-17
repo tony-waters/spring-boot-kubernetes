@@ -43,6 +43,7 @@ replay_pid*
 *.backup
 *.lock.hcl
 */.terraform/*
+*.lock
 
 # Crash log files
 crash.log
