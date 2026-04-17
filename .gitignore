@@ -40,6 +40,9 @@ replay_pid*
 # .tfstate files
 *.tfstate
 *.tfstate.*
+*.backup
+*.lock.hcl
+*/.terraform/*
 
 # Crash log files
 crash.log
