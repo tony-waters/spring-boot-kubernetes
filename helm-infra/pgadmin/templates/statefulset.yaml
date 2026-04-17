@@ -1,25 +1,25 @@
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: {{ .Values.pgadmin.names.app }}
-  namespace: {{ .Values.pgadmin.namespaces.app }}
+  name: {{ .Values.names.app }}
+  namespace: {{ .Values.namespaces.app }}
 spec:
-  serviceName: {{ .Values.pgadmin.names.app }}
+  serviceName: {{ .Values.names.app }}
   podManagementPolicy: Parallel
   replicas: 1
   updateStrategy:
     type: RollingUpdate
   selector:
     matchLabels:
-      app: {{ .Values.pgadmin.names.app }}
+      app: {{ .Values.names.app }}
   template:
     metadata:
       labels:
-        app: {{ .Values.pgadmin.names.app }}
+        app: {{ .Values.names.app }}
     spec:
       terminationGracePeriodSeconds: 10
       containers:
-        - name: {{ .Values.pgadmin.names.app }}
+        - name: {{ .Values.names.app }}
           image: dpage/pgadmin4:9.14
           imagePullPolicy: Always
           env:
@@ -30,7 +30,7 @@ spec:
             - name: PGADMIN_DEFAULT_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.pgadmin.names.secret }}
+                  name: {{ .Values.names.secret }}
                   key: pgadmin-password
           ports:
             - name: http
@@ -41,15 +41,15 @@ spec:
               mountPath: /pgadmin4/servers.json
               subPath: servers.json
               readOnly: true
-            - name: {{ .Values.pgadmin.names.volumeClaim }}
+            - name: {{ .Values.names.volumeClaim }}
               mountPath: /var/lib/pgadmin
       volumes:
         - name: pgadmin-config
           configMap:
-            name: {{ .Values.pgadmin.names.config }}
+            name: {{ .Values.names.config }}
   volumeClaimTemplates:
     - metadata:
-        name: {{ .Values.pgadmin.names.volumeClaim }}
+        name: {{ .Values.names.volumeClaim }}
       spec:
         accessModes:
           - ReadWriteOnce

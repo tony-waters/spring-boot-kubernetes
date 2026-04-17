@@ -17,9 +17,9 @@ terraform {
       version = ">= 1.7.0"
     }
 
-    # kind = {
-    #   source = "elioseverojunior/kind"
-    # }
+    kind = {
+      source = "elioseverojunior/kind"
+    }
   }
 }
 
@@ -35,4 +35,4 @@ provider "helm" {
   }
 }
 
-# provider "kind" {}
+provider "kind" {}

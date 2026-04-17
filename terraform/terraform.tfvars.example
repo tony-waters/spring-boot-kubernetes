@@ -1,5 +1,5 @@
 kubeconfig_path = "~/.kube/config"
-kube_context    = "kind-kind"
+kube_context    = "springapp-cluster"
 
 namespace             = "spring-boot-app-demo"
 release_name          = "spring-boot-app"
