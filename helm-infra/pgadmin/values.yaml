@@ -1,0 +1,11 @@
+enabled: false
+names:
+  app: pgadmin
+  secret: pgadmin
+  route: pgadmin
+  config: pgadmin
+  volumeClaim: pgadmin-data
+  gateway: application-gateway
+namespaces:
+  app: pgadmin
+  gateway: application-gateway
