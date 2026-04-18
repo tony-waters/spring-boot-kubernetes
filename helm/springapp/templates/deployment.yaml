@@ -25,6 +25,8 @@ spec:
             - configMapRef:
                 name: {{ .Values.name }}
           env:
+            - name: LOGGING_LEVEL_ROOT
+              value: {{ .Values.logging | quote }}
             - name: JAVA_TOOL_OPTIONS
               valueFrom:
                 configMapKeyRef:

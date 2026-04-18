@@ -12,3 +12,4 @@ route:
 postgres:
   secret: postgres-secret
 
+logging: INFO
