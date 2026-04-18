@@ -40,6 +40,8 @@ replay_pid*
 # .tfstate files
 *.tfstate
 *.tfstate.*
+*.lock.hcl
+
 
 # Crash log files
 crash.log
