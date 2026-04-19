@@ -11,7 +11,7 @@ resource "kubernetes_namespace" "postgres" {
 
 resource "helm_release" "postgres" {
   name       = "postgres"
-  namespace  = "postgres"
+  namespace  = kubernetes_namespace.prometheus.metadata[0].name
   create_namespace = false
 
   chart      = "${path.module}/../../helm-infra/postgres"
@@ -21,11 +21,6 @@ resource "helm_release" "postgres" {
   timeout         = 300
   atomic          = false
   cleanup_on_fail = false
-
-  # --- values ---
-  # values = [
-  #   file("${path.module}/postgres-values.yaml")
-  # ]
 
   depends_on = [kubernetes_namespace.postgres]
 }

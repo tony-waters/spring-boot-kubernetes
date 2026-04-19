@@ -11,7 +11,7 @@ resource "kubernetes_namespace" "application-gateway" {
 
 resource "helm_release" "application-gateway" {
   name       = "gateway"
-  # namespace  = "gateway"
+  namespace  = kubernetes_namespace.application-gateway.metadata[0].name
   create_namespace = false
 
   chart      = "${path.module}/../../helm-infra/gateway"

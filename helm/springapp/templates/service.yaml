@@ -3,6 +3,10 @@ kind: Service
 metadata:
   name: {{ .Values.name }}
   namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ .Values.name }}
+    app.kubernetes.io/name: {{ .Values.name }}
+    app.kubernetes.io/managed-by: Helm
 spec:
   type: ClusterIP
   selector:

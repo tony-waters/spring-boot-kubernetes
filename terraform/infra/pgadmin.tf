@@ -11,7 +11,7 @@ resource "kubernetes_namespace" "pgadmin" {
 
 resource "helm_release" "pgadmin" {
   name       = "pgadmin"
-  namespace  = "pgadmin"
+  namespace  = kubernetes_namespace.pgadmin.metadata[0].name
   create_namespace = false
 
   chart      = "${path.module}/../../helm-infra/pgadmin"

@@ -18,7 +18,7 @@ resource "helm_release" "springapp" {
 
   values = [
     yamlencode({
-      logging = "DEBUG"
+      logging = "INFO"
     })
   ]
 
@@ -27,11 +27,6 @@ resource "helm_release" "springapp" {
   timeout         = 300
   atomic          = false
   cleanup_on_fail = false
-
-  # --- values ---
-  # values = [
-  #   file("${path.module}/springapp-values.yaml")
-  # ]
 
   depends_on = [kubernetes_namespace.application]
 }
@@ -48,11 +43,6 @@ resource "helm_release" "springseed" {
   timeout         = 300
   atomic          = false
   cleanup_on_fail = false
-
-  # --- values ---
-  # values = [
-  #   file("${path.module}/springseed-values.yaml")
-  # ]
 
   depends_on = [kubernetes_namespace.application, helm_release.springapp]
 }
