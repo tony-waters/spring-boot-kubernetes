@@ -1,7 +1,7 @@
 enabled: true
 names:
   app: postgres
-  secret: postgres
+#  secret: postgres
   volumeClaim: postgres-data
 namespaces:
   app: postgres

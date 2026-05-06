@@ -46,7 +46,7 @@ spec:
       volumes:
         - name: pgadmin-config
           configMap:
-            name: {{ .Values.names.config }}
+            name: {{ .Values.names.app }}
   volumeClaimTemplates:
     - metadata:
         name: {{ .Values.names.volumeClaim }}
