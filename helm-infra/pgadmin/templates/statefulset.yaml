@@ -30,7 +30,7 @@ spec:
             - name: PGADMIN_DEFAULT_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.names.secret }}
+                  name: {{ .Values.names.app }}
                   key: pgadmin-password
           ports:
             - name: http
