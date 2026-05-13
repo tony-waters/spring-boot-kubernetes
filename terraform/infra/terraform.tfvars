@@ -1,0 +1,30 @@
+kubeconfig_path = "~/.kube/config"
+kube_context    = "kind-springapp-cluster"
+
+# namespace             = "spring-boot-app-demo"
+# release_name          = "spring-boot-app"
+# postgres_release_name = "postgres"
+#
+# image_repository = "ghcr.io/tony-waters/spring-boot-app"
+# image_tag        = "latest"
+#
+# service_type = "ClusterIP"
+#
+# autoscaling_enabled       = false
+# autoscaling_min_replicas  = 1
+# autoscaling_max_replicas  = 3
+# autoscaling_target_cpu    = 70
+#
+# ingress_enabled    = false
+# ingress_class_name = ""
+# host               = "spring-boot-app.local"
+#
+# db_service_name       = "postgres"
+# db_port               = 5432
+# db_name               = "spring_jpa"
+# db_username           = "spring_user"
+# db_password           = "change-me-now"
+# db_secret_name        = "postgres-secret"
+# db_storage_size       = "5Gi"
+# db_storage_class_name = ""
+# db_ddl_auto           = "update"

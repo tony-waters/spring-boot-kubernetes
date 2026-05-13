@@ -1,0 +1,15 @@
+dependencies:
+- name: namespaces
+  repository: file://./namespaces
+  version: 0.1.0
+- name: gateway
+  repository: file://./gateway
+  version: 0.1.0
+- name: postgres
+  repository: file://./postgres
+  version: 0.1.0
+- name: pgadmin
+  repository: file://./pgadmin
+  version: 0.1.0
+digest: sha256:88920b04b2d72bdf45e0c5960fb21e0f0b11f42a8bb9860a17460838754c645a
+generated: "2026-04-16T17:29:18.908775651+01:00"
