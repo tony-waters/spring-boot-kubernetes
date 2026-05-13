@@ -8,6 +8,10 @@ resource "kind_cluster" "default" {
     node {
         role = "worker"
     }
+
+    node {
+        role = "worker"
+    }
 }
 
 resource "terraform_data" "cloud_provider_kind" {
