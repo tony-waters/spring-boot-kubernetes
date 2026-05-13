@@ -38,10 +38,10 @@ done
 echo "==> Optional stop other containers"
 docker ps -q | xargs -r docker stop
 
-echo "==> Optional cleanup of dangling containers and volumes"
+echo "==> Optional cleanup of dangling images/volumes"
 docker system prune -f >/dev/null 2>&1 || true
 #docker image prune -f >/dev/null 2>&1 || true
-docker volume prune -a -f >/dev/null 2>&1 || true
+docker volume prune -f >/dev/null 2>&1 || true
 
 echo "==> Optional delete infra charts"
 rm -Rf ./helm-infra/charts

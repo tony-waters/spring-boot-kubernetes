@@ -17,9 +17,10 @@ terraform {
       version = ">= 1.7.0"
     }
 
-    kind = {
-      source = "elioseverojunior/kind"
-    }
+    # docker = {
+    #   source = "kreuzwerker/docker"
+    #   version = "~> 3.0.1"
+    # }
   }
 }
 
@@ -35,4 +36,9 @@ provider "helm" {
   }
 }
 
-provider "kind" {}
+provider "kubectl" {
+  config_path    = var.kubeconfig_path
+  config_context = var.kube_context
+}
+
+# provider "docker" {}

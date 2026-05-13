@@ -14,3 +14,9 @@ sleep 2
 kubectl get gatewayclass
 kubectl get crd | grep gateway.networking.k8s.io
 
+helm dependency build ./helm-infra
+helm install infra ./helm-infra
+helm dependency build ./helm/springapp
+helm upgrade --install springapp ./helm/springapp
+
+

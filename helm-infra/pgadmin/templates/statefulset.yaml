@@ -26,11 +26,11 @@ spec:
             - name: SCRIPT_NAME
               value: /pgadmin
             - name: PGADMIN_DEFAULT_EMAIL
-              value: user@domain.com
+              value: user@somewhere.com
             - name: PGADMIN_DEFAULT_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.names.secret }}
+                  name: {{ .Values.names.app }}
                   key: pgadmin-password
           ports:
             - name: http
@@ -46,7 +46,7 @@ spec:
       volumes:
         - name: pgadmin-config
           configMap:
-            name: {{ .Values.names.config }}
+            name: {{ .Values.names.app }}
   volumeClaimTemplates:
     - metadata:
         name: {{ .Values.names.volumeClaim }}
