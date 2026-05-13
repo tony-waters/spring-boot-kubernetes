@@ -1,0 +1,5 @@
+enabled: true
+names:
+  gateway: application-gateway
+namespaces:
+  gateway: application-gateway

@@ -28,17 +28,17 @@ spec:
             - name: POSTGRES_USER
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.names.secret }}
+                  name: {{ .Values.names.app }}
                   key: postgres-user
             - name: POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.names.secret }}
+                  name: {{ .Values.names.app }}
                   key: postgres-password
             - name: POSTGRES_DB
               valueFrom:
                 secretKeyRef:
-                  name: {{ .Values.names.secret }}
+                  name: {{ .Values.names.app }}
                   key: postgres-db
           readinessProbe:
             exec:

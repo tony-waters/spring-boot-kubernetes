@@ -9,6 +9,10 @@ route:
     name: application-gateway
     namespace: application-gateway
 
+serviceMonitor:
+  enabled: false
+
 postgres:
   secret: postgres-secret
 
+logging: INFO

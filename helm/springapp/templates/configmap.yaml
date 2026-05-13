@@ -6,8 +6,10 @@ metadata:
 data:
   SERVER_PORT: "8080"
   SPRING_PROFILES_ACTIVE: "default"
-  MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE: "health,info"
+  MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE: "health,info,prometheus"
   MANAGEMENT_ENDPOINT_HEALTH_PROBES_ENABLED: "true"
+  management.endpoint.prometheus.access: "read_only"
+  management.prometheus.metrics.export.enabled: "true"
   JAVA_OPTS: "-Xms256m -Xmx512m"
   SPRING_DATASOURCE_URL: "jdbc:postgresql://postgres.postgres:5432/spring_jpa"
   SPRING_DATASOURCE_DRIVER_CLASS_NAME: "org.postgresql.Driver"
