@@ -9,17 +9,8 @@ RELEASE_NAMESPACE="${RELEASE_NAMESPACE:-default}"
 echo "==> Uninstalling Helm release (if present)"
 helm uninstall "${RELEASE_NAME}" -n "${RELEASE_NAMESPACE}" 2>/dev/null || true
 
-#echo "==> Deleting common app namespaces (if present)"
-#kubectl delete namespace application application-gateway postgres pgadmin demo --ignore-not-found=true 2>/dev/null || true
-
 echo "==> Removing cloud-provider-kind container (if present)"
 docker rm -f "${CCM_NAME}" 2>/dev/null || true
-
-#echo "==> Removing any gateway envoy containers"
-#GW_CONTAINERS="$(docker ps -aq --filter 'name=kindccm-gw-')"
-#if [ -n "${GW_CONTAINERS}" ]; then
-#  docker rm -f ${GW_CONTAINERS}
-#fi
 
 echo "==> Deleting kind cluster '${CLUSTER_NAME}'"
 kind delete cluster --name "${CLUSTER_NAME}" 2>/dev/null || true
