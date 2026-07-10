@@ -19,6 +19,7 @@ resource "helm_release" "springapp" {
   values = [
     yamlencode({
       logging = "INFO"
+      replicaCount = 5
     })
   ]
 
